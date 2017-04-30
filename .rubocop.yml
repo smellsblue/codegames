@@ -1,0 +1,34 @@
+AllCops:
+  Exclude:
+    - bin/**/*
+    - tmp/**/*
+    - vendor/**/*
+    - db/migrate/**/*
+    - db/schema.rb
+  DisplayCopNames: true
+  TargetRubyVersion: 2.3
+
+Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 16
+Metrics/LineLength:
+  Max: 120
+Metrics/MethodLength:
+  Max: 15
+
+Rails:
+  Enabled: true
+
+Rails/FilePath:
+  Enabled: false
+
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+Style/SpaceInsideBlockBraces:
+  EnforcedStyleForEmptyBraces: space
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
