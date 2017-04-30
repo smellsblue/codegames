@@ -17,6 +17,10 @@ class Game < ApplicationRecord
     end
   end
 
+  def active?
+    !finished
+  end
+
   private
 
   def create_code

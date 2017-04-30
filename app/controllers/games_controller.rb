@@ -2,6 +2,7 @@
 
 class GamesController < ApplicationController
   def index
+    @game = Game.find(session[:game_id]) if session[:game_id].present?
   end
 
   def create
@@ -12,11 +13,12 @@ class GamesController < ApplicationController
 
   def show
     if session[:game_id] != params[:id].to_i
-      redirect_to new_game_path
+      redirect_to games_path
       return
     end
 
     @game = Game.find(session[:game_id])
+    redirect_to games_path unless @game.active?
   end
 
   def join

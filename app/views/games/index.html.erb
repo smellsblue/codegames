@@ -1,3 +1,11 @@
+<% if @game && @game.active? %>
+  <%= link_to "Rejoin game '#{@game.code}'", game_path(@game), class: "btn btn-primary" %>
+
+  <div class="divider">
+    <span class="divider-label">OR</span>
+  </div>
+<% end %>
+
 <div class="hidden-xs">
   <%= form_tag games_path do %>
     <button type="submit" class="btn btn-primary">Create a new game</button>
