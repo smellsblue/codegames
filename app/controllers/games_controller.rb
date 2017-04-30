@@ -22,5 +22,11 @@ class GamesController < ApplicationController
   end
 
   def join
+    game = Game.active.with_code(params[:code]).first
+
+    unless game
+      redirect_to games_path, flash: { danger: "There is no active game with code '#{params[:code]}'" }
+      return
+    end
   end
 end

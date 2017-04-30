@@ -19,12 +19,12 @@
 <%= form_tag join_games_path do %>
   <div class="form-group">
     <label for="room-code">Room Code</label>
-    <input type="text" class="form-control" id="room-code" placeholder="Room Code">
+    <input type="text" class="form-control" id="room-code" name="code" placeholder="Room Code">
   </div>
 
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" placeholder="Name">
+    <input type="text" class="form-control" id="name" name="name" placeholder="Name">
   </div>
 
   <button type="submit" class="btn btn-primary">Join an existing game</button>
