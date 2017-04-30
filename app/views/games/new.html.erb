@@ -1,0 +1,23 @@
+<div class="hidden-xs">
+  <%= form_tag games_path do %>
+    <button type="submit" class="btn btn-primary">Create a new game</button>
+  <% end %>
+
+  <div class="divider">
+    <span class="divider-label">OR</span>
+  </div>
+</div>
+
+<%= form_tag join_games_path do %>
+  <div class="form-group">
+    <label for="room-code">Room Code</label>
+    <input type="text" class="form-control" id="room-code" placeholder="Room Code">
+  </div>
+
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" placeholder="Name">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Join an existing game</button>
+<% end %>
