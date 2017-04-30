@@ -24,6 +24,9 @@ Rails:
 Rails/FilePath:
   Enabled: false
 
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
 Style/SignalException:
   EnforcedStyle: only_raise
 
