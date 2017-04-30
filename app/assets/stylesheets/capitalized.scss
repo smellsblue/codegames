@@ -1,0 +1,9 @@
+.text-uppercase {
+    text-transform: uppercase;
+
+    @each $selector in ("&::placeholder", "&::-webkit-input-placeholder", "&:-moz-placeholder", "&::-moz-placeholder", "&:-ms-input-placeholder") {
+        #{$selector} {
+            text-transform: initial;
+        }
+    }
+}

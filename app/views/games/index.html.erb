@@ -1,5 +1,7 @@
 <% if @game && @game.active? %>
-  <%= link_to "Rejoin game '#{@game.code}'", game_path(@game), class: "btn btn-primary" %>
+  <%= link_to game_path(@game), class: "btn btn-primary" do %>
+    Rejoin game '<%= tag.span @game.code, class: "text-uppercase" %>'
+  <% end %>
 
   <div class="divider">
     <span class="divider-label">OR</span>
@@ -19,12 +21,12 @@
 <%= form_tag join_games_path, data: { live_guarded: "true" } do %>
   <div class="form-group">
     <label for="room-code">Room Code</label>
-    <input type="text" class="form-control" id="room-code" name="code" placeholder="Room Code" data-guard="required string" data-guard-string-min="4" maxlength="4">
+    <input type="text" class="form-control text-uppercase" id="room-code" name="code" placeholder="Room Code" data-guard="required string" data-guard-string-min="4" maxlength="4">
   </div>
 
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" name="name" placeholder="Name" data-guard="required">
+    <input type="text" class="form-control text-uppercase" id="name" name="name" placeholder="Name" data-guard="required">
   </div>
 
   <button type="submit" class="btn btn-primary">Join an existing game</button>
