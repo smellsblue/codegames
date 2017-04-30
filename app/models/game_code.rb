@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GameCode
   LETTERS = ("a".."z").to_a.freeze.each(&:freeze)
 
