@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   root to: "games#new"
 
-  resources :games, only: %i[new create] do
+  resources :games, only: %i[new create show] do
     collection do
       post :join
     end
