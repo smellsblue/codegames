@@ -27,6 +27,9 @@ Rails/FilePath:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
+Style/MultilineBlockChain:
+  Enabled: false
+
 Style/SignalException:
   EnforcedStyle: only_raise
 

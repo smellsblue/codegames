@@ -6,8 +6,8 @@ class GamesController < ApplicationController
   end
 
   def create
-    game = Game.generate!
-    session[:game_id] = game.id
+    Game.leave_game(session)
+    game = Game.generate!(session)
     redirect_to game_path(game)
   end
 
@@ -22,11 +22,15 @@ class GamesController < ApplicationController
   end
 
   def join
-    game = Game.active.with_code(params[:code]).first
+    game = Game.find_active(params[:code])
 
     unless game
       redirect_to games_path, flash: { danger: "There is no active game with code '#{params[:code]}'" }
       return
     end
+
+    game.leave_previous_game(session)
+    game.join_game(params, session)
+    redirect_to game_path(game)
   end
 end
