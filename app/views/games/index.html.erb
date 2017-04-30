@@ -16,15 +16,15 @@
   </div>
 </div>
 
-<%= form_tag join_games_path do %>
+<%= form_tag join_games_path, data: { live_guarded: "true" } do %>
   <div class="form-group">
     <label for="room-code">Room Code</label>
-    <input type="text" class="form-control" id="room-code" name="code" placeholder="Room Code">
+    <input type="text" class="form-control" id="room-code" name="code" placeholder="Room Code" data-guard="required string" data-guard-string-min="4" maxlength="4">
   </div>
 
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+    <input type="text" class="form-control" id="name" name="name" placeholder="Name" data-guard="required">
   </div>
 
   <button type="submit" class="btn btn-primary">Join an existing game</button>

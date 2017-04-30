@@ -45,6 +45,9 @@ GEM
     autoprefixer-rails (6.7.7.2)
       execjs
     bindex (0.5.0)
+    bootstrap-guardsjs-rails (0.4.0.1)
+      guardsjs-rails (>= 1.2.0)
+      railties (>= 3.0, < 6.0)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
@@ -72,6 +75,8 @@ GEM
     ffi (1.9.18)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
+    guardsjs-rails (1.5.1.1)
+      railties (>= 3.0, < 6.0)
     i18n (0.8.1)
     jbuilder (2.6.3)
       activesupport (>= 3.0.0, < 5.2)
@@ -196,6 +201,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-guardsjs-rails
   bootstrap-sass
   byebug
   capybara (~> 2.13.0)
