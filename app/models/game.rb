@@ -2,6 +2,7 @@
 
 class Game < ApplicationRecord
   before_create :create_code
+  has_many :players
 
   def self.leave_game(session)
     return unless session[:game_id]
@@ -43,6 +44,14 @@ class Game < ApplicationRecord
     Game.leave_game(session)
   end
 
+  def join_game(params, session)
+    create_player(params[:name].strip.downcase).tap do |player|
+      session[:game_id] = id
+      session[:role] = "player"
+      session[:player_id] = player.id
+    end
+  end
+
   def terminate
     self.finished = true
     self.finished_at = Time.zone.now
@@ -54,6 +63,20 @@ class Game < ApplicationRecord
   end
 
   private
+
+  def create_player(name)
+    name = name.gsub(/\s+/, " ")
+    existing = players.find_by(name: name)
+
+    if existing && !existing.active?
+      existing.reactivate
+      existing
+    elsif existing
+      raise Player::ExistingPlayerError, "Please pick a unique name!"
+    else
+      players.create!(name: name)
+    end
+  end
 
   def create_code
     loop do

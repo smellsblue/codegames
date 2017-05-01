@@ -18,6 +18,7 @@ class GamesController < ApplicationController
     end
 
     @game = Game.find(session[:game_id])
+    @player = @game.players.find_by(id: session[:player_id])
     redirect_to games_path unless @game.active?
   end
 
