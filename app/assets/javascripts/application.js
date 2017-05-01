@@ -15,4 +15,6 @@
 //= require jquery
 //= require bootstrap-sprockets
 //= require bootstrap-guards
+//= require tmpl
 //= require cable
+//= require player

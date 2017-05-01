@@ -1,0 +1,26 @@
+<p>
+  Room Code: <%= tag.span @game.code, class: "text-uppercase" %>
+</p>
+
+<p>
+  <%= form_tag leave_games_path do %>
+    <button type="submit" class="btn btn-default">Leave game</button>
+  <% end %>
+</p>
+
+<p>
+  <ul id="players">
+  </ul>
+</p>
+
+<script type="text/x-tmpl" id="tmpl-player">
+  <li class="player text-uppercase" data-id="{%= o.id %}">{%= o.name %}</li>
+</script>
+
+<%= javascript_tag do %>
+  <% @game.players.each do |player| %>
+    <% if player.active? %>
+      Player.joined(<%= player.to_json.html_safe %>);
+    <% end %>
+  <% end %>
+<% end %>

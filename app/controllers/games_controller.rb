@@ -19,7 +19,12 @@ class GamesController < ApplicationController
 
     @game = Game.find(session[:game_id])
     @player = @game.players.find_by(id: session[:player_id])
-    redirect_to games_path unless @game.active?
+
+    if @game.active?
+      render @game.view_template(session)
+    else
+      redirect_to games_path
+    end
   end
 
   def join

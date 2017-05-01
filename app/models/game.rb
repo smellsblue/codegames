@@ -48,6 +48,15 @@ class Game < ApplicationRecord
     end
   end
 
+  def view_template(session)
+    case session[:role]
+    when "creator"
+      "games/for_creator"
+    when "player"
+      "games/for_player"
+    end
+  end
+
   def leave_previous_game(session, cookies)
     return if session[:game_id] == id
     Game.leave_game(session, cookies)
@@ -55,7 +64,7 @@ class Game < ApplicationRecord
 
   def join_game(params, session, cookies)
     create_player(params[:name]).tap do |player|
-      CreatorChannel.broadcast_to(self, event: "player_joined", id: player.id, name: player.name)
+      CreatorChannel.broadcast_to(self, event: "player_joined", player: player)
       session[:game_id] = id
       session[:role] = "player"
       session[:player_id] = player.id

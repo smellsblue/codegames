@@ -10,7 +10,7 @@ class Player < ApplicationRecord
   def leave_game
     self.active = false
     save!
-    CreatorChannel.broadcast_to(game, event: "player_left", id: id, name: name)
+    CreatorChannel.broadcast_to(game, event: "player_left", player: self)
   end
 
   def reactivate

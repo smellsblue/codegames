@@ -2,11 +2,9 @@
   Room Code: <%= tag.span @game.code, class: "text-uppercase" %>
 </p>
 
-<% if @player %>
-  <p>
-    Player Name: <%= tag.span @player.name, class: "text-uppercase" %>
-  </p>
-<% end %>
+<p>
+  Player Name: <%= tag.span @player.name, class: "text-uppercase" %>
+</p>
 
 <p>
   <%= form_tag leave_games_path do %>

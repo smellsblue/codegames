@@ -45,6 +45,8 @@ GEM
     autoprefixer-rails (6.7.7.2)
       execjs
     bindex (0.5.0)
+    blueimp-templates-rails (3.8.0)
+      railties (>= 3.0, < 6.0)
     bootstrap-guardsjs-rails (0.4.0.1)
       guardsjs-rails (>= 1.2.0)
       railties (>= 3.0, < 6.0)
@@ -201,6 +203,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  blueimp-templates-rails
   bootstrap-guardsjs-rails
   bootstrap-sass
   byebug
