@@ -18,6 +18,8 @@
 </script>
 
 <%= javascript_tag do %>
+  Game.current = new Game(<%= @game.to_json.html_safe %>);
+
   <% @game.players.each do |player| %>
     <% if player.active? %>
       Player.joined(<%= player.to_json.html_safe %>);

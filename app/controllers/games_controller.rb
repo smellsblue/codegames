@@ -46,4 +46,15 @@ class GamesController < ApplicationController
     Game.leave_game(session, cookies)
     redirect_to games_path
   end
+
+  def ended
+    game = Game.find(params[:id])
+
+    if game.active?
+      redirect_to game_path(game)
+    else
+      Game.clear_game(session, cookies)
+      redirect_to games_path, flash: { info: "The game has ended" }
+    end
+  end
 end

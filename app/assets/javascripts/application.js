@@ -18,3 +18,4 @@
 //= require tmpl
 //= require cable
 //= require player
+//= require game

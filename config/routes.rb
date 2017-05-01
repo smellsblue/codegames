@@ -8,5 +8,9 @@ Rails.application.routes.draw do
       post :join
       post :leave
     end
+
+    member do
+      get :ended
+    end
   end
 end

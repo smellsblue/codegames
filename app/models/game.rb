@@ -78,7 +78,7 @@ class Game < ApplicationRecord
     self.finished = true
     self.finished_at = Time.zone.now
     save!
-    PlayerChannel.broadcast_to(self, event: "game_ended")
+    PlayerChannel.broadcast_to(self, event: "game_ended", game: self)
   end
 
   def active?

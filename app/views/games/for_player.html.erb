@@ -11,3 +11,8 @@
     <button type="submit" class="btn btn-default">Leave game</button>
   <% end %>
 </p>
+
+<%= javascript_tag do %>
+  Game.current = new Game(<%= @game.to_json.html_safe %>);
+  Player.current = new Player(<%= @player.to_json.html_safe %>);
+<% end %>
