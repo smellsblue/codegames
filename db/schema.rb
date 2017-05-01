@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20170430062850) do
   create_table "players", force: :cascade do |t|
     t.integer "game_id", null: false
     t.string "name", null: false
+    t.boolean "active", default: true, null: false
     t.integer "score", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

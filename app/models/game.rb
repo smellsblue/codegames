@@ -40,12 +40,12 @@ class Game < ApplicationRecord
   end
 
   def leave_previous_game(session)
-    return unless session[:game_id] != id
+    return if session[:game_id] == id
     Game.leave_game(session)
   end
 
   def join_game(params, session)
-    create_player(params[:name].strip.downcase).tap do |player|
+    create_player(params[:name]).tap do |player|
       session[:game_id] = id
       session[:role] = "player"
       session[:player_id] = player.id
@@ -65,14 +65,14 @@ class Game < ApplicationRecord
   private
 
   def create_player(name)
-    name = name.gsub(/\s+/, " ")
+    name = name.strip.downcase.gsub(/\s+/, " ")
     existing = players.find_by(name: name)
 
     if existing && !existing.active?
       existing.reactivate
       existing
     elsif existing
-      raise Player::ExistingPlayerError, "Please pick a unique name!"
+      raise Player::ExistingPlayerError, "Please pick a unique name, '#{name.upcase}' is already playing!"
     else
       players.create!(name: name)
     end

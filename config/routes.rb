@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :games, only: %i[index create show] do
     collection do
       post :join
+      post :leave
     end
   end
 end

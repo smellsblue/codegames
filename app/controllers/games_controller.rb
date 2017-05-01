@@ -23,15 +23,22 @@ class GamesController < ApplicationController
   end
 
   def join
-    game = Game.find_active(params[:code])
+    game = Game.find_active(params[:code].downcase)
 
     unless game
-      redirect_to games_path, flash: { danger: "There is no active game with code '#{params[:code]}'" }
+      redirect_to games_path, flash: { danger: "There is no active game with code '#{params[:code].upcase}'" }
       return
     end
 
     game.leave_previous_game(session)
     game.join_game(params, session)
     redirect_to game_path(game)
+  rescue Player::ExistingPlayerError => e
+    redirect_to games_path, flash: { danger: e.message }
+  end
+
+  def leave
+    Game.leave_game(session)
+    redirect_to games_path
   end
 end
