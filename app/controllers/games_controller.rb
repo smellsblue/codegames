@@ -6,8 +6,8 @@ class GamesController < ApplicationController
   end
 
   def create
-    Game.leave_game(session)
-    game = Game.generate!(session)
+    Game.leave_game(session, cookies)
+    game = Game.generate!(session, cookies)
     redirect_to game_path(game)
   end
 
@@ -30,15 +30,15 @@ class GamesController < ApplicationController
       return
     end
 
-    game.leave_previous_game(session)
-    game.join_game(params, session)
+    game.leave_previous_game(session, cookies)
+    game.join_game(params, session, cookies)
     redirect_to game_path(game)
   rescue Player::ExistingPlayerError => e
     redirect_to games_path, flash: { danger: e.message }
   end
 
   def leave
-    Game.leave_game(session)
+    Game.leave_game(session, cookies)
     redirect_to games_path
   end
 end
