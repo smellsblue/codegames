@@ -1,17 +1,28 @@
-<p>
-  Room Code: <%= tag.span @game.code, class: "text-uppercase" %>
-</p>
+<% content_for :navbar_left do %>
+  <li class="navbar-text">
+    <strong class="text-large">Room Code: <%= tag.span @game.code, class: "text-uppercase text-serif" %></strong>
+  </li>
+<% end %>
 
-<p>
-  <%= form_tag leave_games_path do %>
-    <button type="submit" class="btn btn-default">Leave game</button>
-  <% end %>
-</p>
+<% content_for :navbar_right do %>
+  <li class="navbar-form">
+    <%= form_tag leave_games_path do %>
+      <button type="submit" class="btn btn-default">End Game</button>
+    <% end %>
+  </li>
+<% end %>
 
-<p>
-  <ul id="players">
-  </ul>
-</p>
+<div class="row">
+  <div class="col-xs-9">
+  </div>
+
+  <div class="col-xs-3">
+    <h4><strong>Players</strong></h4>
+
+    <ul id="players" class="list-unstyled">
+    </ul>
+  </div>
+</div>
 
 <script type="text/x-tmpl" id="tmpl-player">
   <li class="player text-uppercase" data-id="{%= o.id %}">{%= o.name %}</li>
