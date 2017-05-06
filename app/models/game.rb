@@ -4,6 +4,14 @@ class Game < ApplicationRecord
   before_create :create_code
   has_many :players
 
+  def self.start_game(session)
+    return unless session[:game_id]
+    return unless session[:role] == "creator"
+    game = active.find_by(id: session[:game_id])
+    game.start
+    game
+  end
+
   def self.leave_game(session, cookies)
     return unless session[:game_id]
     game = active.find_by(id: session[:game_id])
@@ -72,6 +80,13 @@ class Game < ApplicationRecord
       cookies.permanent.signed[:role] = "player"
       cookies.permanent.signed[:player_id] = player.id
     end
+  end
+
+  def start
+    self.started = true
+    self.started_at = Time.zone.now
+    save!
+    CreatorChannel.broadcast_to(self, event: "game_started", game: self)
   end
 
   def terminate

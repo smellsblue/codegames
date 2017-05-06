@@ -42,6 +42,11 @@ class GamesController < ApplicationController
     redirect_to games_path, flash: { danger: e.message }
   end
 
+  def start
+    game = Game.start_game(session)
+    redirect_to game_path(game)
+  end
+
   def leave
     Game.leave_game(session, cookies)
     redirect_to games_path

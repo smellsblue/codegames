@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 20170430062850) do
 
   create_table "games", force: :cascade do |t|
     t.string "code", null: false
+    t.boolean "started", default: false, null: false
     t.boolean "finished", default: false, null: false
     t.datetime "started_at"
     t.datetime "finished_at"

@@ -2,6 +2,7 @@ class CreateGames < ActiveRecord::Migration[5.1]
   def change
     create_table :games do |t|
       t.string :code, null: false
+      t.boolean :started, default: false, null: false
       t.boolean :finished, default: false, null: false
       t.datetime :started_at
       t.datetime :finished_at

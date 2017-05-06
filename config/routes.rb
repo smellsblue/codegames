@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     collection do
       post :join
       post :leave
+      post :start
     end
 
     member do

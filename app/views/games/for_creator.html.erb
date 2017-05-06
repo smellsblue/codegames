@@ -5,9 +5,17 @@
 <% end %>
 
 <% content_for :navbar_right do %>
+  <% unless @game.started? %>
+    <li class="navbar-form">
+      <%= form_tag start_games_path do %>
+        <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-play" title="Start Game"></i></button>
+      <% end %>
+    </li>
+  <% end %>
+
   <li class="navbar-form">
     <%= form_tag leave_games_path do %>
-      <button type="submit" class="btn btn-default">End Game</button>
+      <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-remove" title="End Game"></i></button>
     <% end %>
   </li>
 <% end %>
