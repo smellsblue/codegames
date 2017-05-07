@@ -14,4 +14,10 @@ Rails.application.routes.draw do
       get :ended
     end
   end
+
+  resources :rounds, only: [] do
+    collection do
+      post :start
+    end
+  end
 end

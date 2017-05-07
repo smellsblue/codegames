@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 20170430062850) do
 
   create_table "games", force: :cascade do |t|
     t.string "code", null: false
+    t.integer "current_round_id"
     t.boolean "started", default: false, null: false
     t.boolean "finished", default: false, null: false
     t.datetime "started_at"
@@ -30,6 +31,26 @@ ActiveRecord::Schema.define(version: 20170430062850) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_players_on_game_id"
+  end
+
+  create_table "round_data", force: :cascade do |t|
+    t.string "game_type", null: false
+    t.text "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rounds", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.integer "round_data_id", null: false
+    t.integer "next_round_id"
+    t.string "game_type", null: false
+    t.string "state", null: false
+    t.text "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_rounds_on_game_id"
+    t.index ["round_data_id"], name: "index_rounds_on_round_data_id"
   end
 
 end

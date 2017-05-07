@@ -7,6 +7,10 @@ class Player < ApplicationRecord
   belongs_to :game
   validates :name, presence: true
 
+  def self.active
+    where(active: true)
+  end
+
   def leave_game
     self.active = false
     save!
