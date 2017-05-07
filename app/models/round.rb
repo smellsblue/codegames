@@ -20,12 +20,20 @@ class Round < ApplicationRecord
     next_round
   end
 
+  def game_object
+    @game_object ||= GameType.game_class(game_type).new(self)
+  end
+
   def broadcast_data
-    CreatorChannel.broadcast_to(game, event: "round_started", data: creator_channel_data)
+    CreatorChannel.broadcast_to(game, event: "round_started", round: creator_channel_data)
 
     game.players.active.each do |player|
-      PlayerChannel.broadcast_to(player, event: "round_started", data: player_channel_data(player))
+      PlayerChannel.broadcast_to(player, event: "round_started", round: player_channel_data(player))
     end
+  end
+
+  def to_json_for_player(player)
+    player_channel_data(player).to_json
   end
 
   def creator_channel_data
@@ -33,6 +41,11 @@ class Round < ApplicationRecord
   end
 
   def player_channel_data(player)
-    {}
+    {
+      id: id,
+      game_type: game_type,
+      state: state,
+      data: {}
+    }
   end
 end

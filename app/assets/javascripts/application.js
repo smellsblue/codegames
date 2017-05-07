@@ -19,3 +19,7 @@
 //= require cable
 //= require player
 //= require game
+//= require game_type
+//= require game_type/code_lash
+//= require game_type/fib_onacci
+//= require round

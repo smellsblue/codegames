@@ -42,5 +42,9 @@ module GameType
       already_chosen_ids = game.rounds.where(game_type: game_type).pluck(:round_data_id)
       RoundData.where(game_type: game_type).where.not(id: already_chosen_ids).order("RANDOM()").take(amount)
     end
+
+    def pending?
+      round.state == "pending"
+    end
   end
 end

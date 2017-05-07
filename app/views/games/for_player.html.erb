@@ -1,18 +1,38 @@
-<p>
-  Room Code: <%= tag.span @game.code, class: "text-uppercase" %>
-</p>
+<% content_for :navbar_left do %>
+  <li class="navbar-text visible-xs">
+    <strong class="text-uppercase"><%= @player.name %></strong>
+    <%= form_tag leave_games_path, class: "pull-right" do %>
+      <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-remove" title="End Game"></i></button>
+    <% end %>
+  </li>
 
-<p>
-  Player Name: <%= tag.span @player.name, class: "text-uppercase" %>
-</p>
+  <li class="navbar-text hidden-xs">
+    <strong class="text-uppercase"><%= @player.name %></strong>
+  </li>
+<% end %>
 
-<p>
-  <%= form_tag leave_games_path do %>
-    <button type="submit" class="btn btn-default">Leave game</button>
-  <% end %>
-</p>
+<% content_for :navbar_right do %>
+  <li class="navbar-form hidden-xs">
+    <%= form_tag leave_games_path do %>
+      <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-remove" title="End Game"></i></button>
+    <% end %>
+  </li>
+<% end %>
+
+<div id="game-content">
+  <p class="lead">
+    Please wait for the round to start
+  </p>
+</div>
+
+<%= render partial: "games/type/codelash/for_player" %>
 
 <%= javascript_tag do %>
   Game.current = new Game(<%= @game.to_json.html_safe %>);
   Player.current = new Player(<%= @player.to_json.html_safe %>);
+
+  <% if @game.active_round? %>
+    Round.current = new Round(<%= @game.current_round.to_json_for_player(@player).html_safe %>);
+    Round.current.render();
+  <% end %>
 <% end %>

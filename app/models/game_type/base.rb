@@ -1,5 +1,7 @@
 module GameType
   class Base
+    attr_reader :round
+
     def self.create_rounds(game, amount)
       first_round = nil
       previous_round = nil
@@ -13,6 +15,10 @@ module GameType
       end
 
       first_round
+    end
+
+    def initialize(round)
+      @round = round
     end
   end
 end

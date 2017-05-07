@@ -65,6 +65,10 @@ class Game < ApplicationRecord
     end
   end
 
+  def active_round?
+    current_round
+  end
+
   def view_template(session)
     case session[:role]
     when "creator"
