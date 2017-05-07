@@ -12,7 +12,7 @@ module GameType
       create_rounds(game, player_pairs.size) do |round, i|
         round.round_data = questions.shift
         round.data = {
-          player_pairs: player_pairs.shift,
+          players: player_pairs.shift,
           answers: [nil, nil],
           votes: {}
         }
@@ -43,8 +43,24 @@ module GameType
       RoundData.where(game_type: game_type).where.not(id: already_chosen_ids).order("RANDOM()").take(amount)
     end
 
-    def pending?
-      round.state == "pending"
+    def data_for_player(player)
+      {}.tap do |result|
+        result[:questions] = []
+
+        rounds.each do |round|
+          if round.data[:players].first == player.id
+            result[:questions] << {
+              text: round.round_data.data[:question],
+              answer: round.data[:answers].first
+            }
+          elsif round.data[:players].last == player.id
+            result[:questions] << {
+              text: round.round_data.data[:question],
+              answer: round.data[:answers].last
+            }
+          end
+        end
+      end
     end
   end
 end

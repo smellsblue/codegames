@@ -20,5 +20,22 @@ module GameType
     def initialize(round)
       @round = round
     end
+
+    def game
+      round.game
+    end
+
+    def rounds
+      # NOTE: The order won't necessarily be the order they are played in
+      @rounds ||= game.rounds.where.not(state: "finished").order(:id)
+    end
+
+    def pending?
+      round.state == "pending"
+    end
+
+    def finished?
+      round.state == "finished"
+    end
   end
 end

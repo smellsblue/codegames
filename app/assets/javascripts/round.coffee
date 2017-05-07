@@ -5,7 +5,7 @@ class Round
         @game_type = obj.game_type
         @state = obj.state
         @data = obj.data
-        @game_object = GameType.construct(@)
+        @gameObject = GameType.construct(@)
 
     @started: (e) ->
         round = new Round(e)
@@ -13,6 +13,6 @@ class Round
         round.render()
 
     render: ->
-        @game_object.render()
+        @gameObject.render()
 
 window.Round = Round

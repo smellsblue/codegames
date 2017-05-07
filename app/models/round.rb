@@ -45,7 +45,7 @@ class Round < ApplicationRecord
       id: id,
       game_type: game_type,
       state: state,
-      data: {}
+      data: game_object.data_for_player(player)
     }
   end
 end
