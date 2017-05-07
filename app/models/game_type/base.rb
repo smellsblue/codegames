@@ -27,7 +27,7 @@ module GameType
 
     def rounds
       # NOTE: The order won't necessarily be the order they are played in
-      @rounds ||= game.rounds.where.not(state: "finished").order(:id)
+      @rounds ||= game.rounds.not_finished.order(:id)
     end
 
     def pending?

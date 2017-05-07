@@ -18,7 +18,7 @@ class GamesController < ApplicationController
     end
 
     @game = Game.find(session[:game_id])
-    @player = @game.players.find_by(id: session[:player_id])
+    @player = @game.players.active.find_by(id: session[:player_id])
 
     if @game.active?
       render @game.view_template(session)

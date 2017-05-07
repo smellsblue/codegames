@@ -7,7 +7,7 @@ class CodeLash
 
     nextQuestion: ->
         for question in @round.data.questions
-            return question.text unless question.answer
+            return question unless question.answer
 
         null
 

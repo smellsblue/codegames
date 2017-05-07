@@ -30,7 +30,7 @@ class Game < ApplicationRecord
     when "creator"
       game.terminate
     when "player"
-      player = game.players.find(session[:player_id])
+      player = game.players.active.find(session[:player_id])
       player.leave_game
     end
 

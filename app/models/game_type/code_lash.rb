@@ -43,6 +43,16 @@ module GameType
       RoundData.where(game_type: game_type).where.not(id: already_chosen_ids).order("RANDOM()").take(amount)
     end
 
+    def answer(player, params)
+      if pending?
+        index = round.data[:players].index(player.id)
+        raise "No action for this player!" unless index
+        return if round.data[:answers][index]
+        round.data[:answers][index] = params[:answer]
+        round.save!
+      end
+    end
+
     def data_for_player(player)
       {}.tap do |result|
         result[:questions] = []
@@ -50,11 +60,13 @@ module GameType
         rounds.each do |round|
           if round.data[:players].first == player.id
             result[:questions] << {
+              round_id: round.id,
               text: round.round_data.data[:question],
               answer: round.data[:answers].first
             }
           elsif round.data[:players].last == player.id
             result[:questions] << {
+              round_id: round.id,
               text: round.round_data.data[:question],
               answer: round.data[:answers].last
             }

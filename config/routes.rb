@@ -16,6 +16,10 @@ Rails.application.routes.draw do
   end
 
   resources :rounds, only: [] do
+    member do
+      post :answer
+    end
+
     collection do
       post :start
     end

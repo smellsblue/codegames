@@ -4,6 +4,18 @@ class Round < ApplicationRecord
   belongs_to :next_round, class_name: "Round", optional: true
   serialize :data
 
+  def self.answer(session, params)
+    Round.transaction do
+      return unless session[:game_id]
+      return unless session[:role] == "player"
+      game = Game.active.find(session[:game_id])
+      round = game.rounds.not_finished.find(params[:id])
+      player = game.players.active.find(session[:player_id])
+      round.game_object.answer(player, params)
+      round
+    end
+  end
+
   # Create a round, which could end up being multiple rounds, and start the
   # first round
   def self.start_round(game, params)
@@ -18,6 +30,10 @@ class Round < ApplicationRecord
 
     next_round.broadcast_data
     next_round
+  end
+
+  def self.not_finished
+    where.not(state: "finished")
   end
 
   def game_object

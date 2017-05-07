@@ -1,7 +1,23 @@
 <script type="text/x-tmpl" id="tmpl-codelash-questions">
-  <p class="lead">
-    {%= o.gameObject.nextQuestion() %}
-  </p>
+  {% var nextQuestion = o.gameObject.nextQuestion(); %}
+
+  {% if (nextQuestion) { %}
+    <p class="lead">
+      {%= nextQuestion.text %}
+    </p>
+
+    <%= form_tag answer_round_path("__ID__") do %>
+      <div class="form-group">
+        <input type="text" name="answer" class="form-control" placeholder="witty answer" />
+      </div>
+
+      <input type="submit" class="btn btn-primary" value="submit" />
+    <% end.sub("__ID__", "{%= nextQuestion.round_id %}").html_safe %>
+    {% } else { %}
+      <p class="lead">
+        Hold tight while we gather the other answers.
+      </p>
+    {% } %}
 </script>
 
 <script type="text/x-tmpl" id="tmpl-codelash-vote">
