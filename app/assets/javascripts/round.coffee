@@ -15,4 +15,7 @@ class Round
     render: ->
         @gameObject.render()
 
+    onEvent: (data) ->
+        @gameObject.onEvent(data)
+
 window.Round = Round

@@ -16,5 +16,8 @@ module Codegames
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+
+    # This might be causing issues, so disable it
+    config.action_controller.per_form_csrf_tokens = false
   end
 end

@@ -11,4 +11,10 @@ class CodeLash
 
         null
 
+    onEvent: (data) ->
+        switch data.round_event
+            when "answer_submitted"
+                for player in data.players
+                    Player.find(player.id).setRoundState(player.round_state)
+
 window.GameType.CodeLash = CodeLash

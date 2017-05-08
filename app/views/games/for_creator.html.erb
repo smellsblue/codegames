@@ -45,11 +45,22 @@
 </div>
 
 <script type="text/x-tmpl" id="tmpl-player">
-  <li class="player text-uppercase" data-id="{%= o.id %}">{%= o.name %}</li>
+  <li class="player text-uppercase" data-id="{%= o.id %}">
+    {%= o.name %}
+    {% if (o.roundState === "pending") { %}
+      <span class="label label-warning"><i class="glyphicon glyphicon-option-horizontal"></i></span>
+    {% } else if (o.roundState === "ready") { %}
+      <span class="label label-success"><i class="glyphicon glyphicon-ok"></i></span>
+    {% } %}
+  </li>
 </script>
 
 <%= javascript_tag do %>
   Game.current = new Game(<%= @game.to_json.html_safe %>);
+
+  <% if @game.active_round? %>
+    Round.current = new Round(<%= @game.current_round.to_json.html_safe %>);
+  <% end %>
 
   <% @game.players.each do |player| %>
     <% if player.active? %>

@@ -50,27 +50,51 @@ module GameType
         return if round.data[:answers][index]
         round.data[:answers][index] = params[:answer]
         round.save!
+        CreatorChannel.broadcast_to(game, event: "round_event", round_event: "answer_submitted", players: game.players.active)
       end
     end
 
-    def data_for_player(player)
-      {}.tap do |result|
-        result[:questions] = []
+    def player_state(player)
+      if pending?
+        questions = questions_for_player(player)
 
+        if questions.all? { |x| x[:answer] }
+          "ready"
+        else
+          "pending"
+        end
+      end
+    end
+
+    def questions_for_player(player)
+      questions_by_player_id[player.id]
+    end
+
+    def data_for_player(player)
+      {
+        questions: questions_for_player(player)
+      }
+    end
+
+    private
+
+    def questions_by_player_id
+      @questions_by_player_id ||= {}.tap do |result|
         rounds.each do |round|
-          if round.data[:players].first == player.id
-            result[:questions] << {
-              round_id: round.id,
-              text: round.round_data.data[:question],
-              answer: round.data[:answers].first
-            }
-          elsif round.data[:players].last == player.id
-            result[:questions] << {
-              round_id: round.id,
-              text: round.round_data.data[:question],
-              answer: round.data[:answers].last
-            }
-          end
+          result[round.data[:players].first] ||= []
+          result[round.data[:players].last] ||= []
+
+          result[round.data[:players].first] << {
+            round_id: round.id,
+            text: round.round_data.data[:question],
+            answer: round.data[:answers].first
+          }
+
+          result[round.data[:players].last] << {
+            round_id: round.id,
+            text: round.round_data.data[:question],
+            answer: round.data[:answers].last
+          }
         end
       end
     end

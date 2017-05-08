@@ -41,8 +41,6 @@ class Round < ApplicationRecord
   end
 
   def broadcast_data
-    CreatorChannel.broadcast_to(game, event: "round_started", round: creator_channel_data)
-
     game.players.active.each do |player|
       PlayerChannel.broadcast_to(player, event: "round_started", round: player_channel_data(player))
     end
@@ -50,10 +48,6 @@ class Round < ApplicationRecord
 
   def to_json_for_player(player)
     player_channel_data(player).to_json
-  end
-
-  def creator_channel_data
-    {}
   end
 
   def player_channel_data(player)
