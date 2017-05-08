@@ -43,6 +43,10 @@ module GameType
       RoundData.where(game_type: game_type).where.not(id: already_chosen_ids).order("RANDOM()").take(amount)
     end
 
+    def voting?
+      game.current_round.state == "voting"
+    end
+
     def answer(player, params)
       if pending?
         index = round.data[:players].index(player.id)
@@ -50,7 +54,20 @@ module GameType
         return if round.data[:answers][index]
         round.data[:answers][index] = params[:answer]
         round.save!
-        CreatorChannel.broadcast_to(game, event: "round_event", round_event: "answer_submitted", players: game.players.active)
+
+        if all_answered?
+          rounds.update_all(state: "voting")
+          CreatorChannel.broadcast_to(game, event: "round_event", round_event: "voting", round: game.current_round, players: game.players.active)
+          PlayerChannel.broadcast_to(game, event: "round_event", round_event: "vote", round: game.current_round)
+        else
+          CreatorChannel.broadcast_to(game, event: "round_event", round_event: "answer_submitted", players: game.players.active)
+        end
+      end
+    end
+
+    def all_answered?
+      rounds.all? do |round|
+        round.data[:answers].none?(&:nil?)
       end
     end
 

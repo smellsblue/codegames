@@ -56,6 +56,7 @@
 </script>
 
 <%= javascript_tag do %>
+  Game.role = "creator";
   Game.current = new Game(<%= @game.to_json.html_safe %>);
 
   <% if @game.active_round? %>

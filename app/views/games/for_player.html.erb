@@ -28,6 +28,7 @@
 <%= render partial: "games/type/codelash/for_player" %>
 
 <%= javascript_tag do %>
+  Game.role = "player";
   Game.current = new Game(<%= @game.to_json.html_safe %>);
   Player.current = new Player(<%= @player.to_json.html_safe %>);
 

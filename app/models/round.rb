@@ -46,6 +46,12 @@ class Round < ApplicationRecord
     end
   end
 
+  def as_json(options = {})
+    super.tap do |result|
+      result[:round_data] = round_data.data
+    end
+  end
+
   def to_json_for_player(player)
     player_channel_data(player).to_json
   end

@@ -5,6 +5,7 @@ class Round
         @game_type = obj.game_type
         @state = obj.state
         @data = obj.data
+        @roundData = obj.round_data
         @gameObject = GameType.construct(@)
 
     @started: (e) ->

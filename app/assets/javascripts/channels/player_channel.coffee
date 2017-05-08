@@ -5,3 +5,5 @@ App.cable.subscriptions.create { channel: "PlayerChannel" },
                 Game.ended(data)
             when "round_started"
                 Round.current = Round.started(data)
+            when "round_event"
+                Round.current.onEvent(data)
