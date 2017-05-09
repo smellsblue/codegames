@@ -12,13 +12,23 @@ class CodeLash
         $("#game-content").html tmpl("tmpl-codelash-vote", @round)
 
     renderForPlayer: ->
-        $("#game-content").html tmpl("tmpl-codelash-questions", @round)
+        switch @round.state
+            when "pending"
+                $("#game-content").html tmpl("tmpl-codelash-questions", @round)
+            when "voting"
+                $("#game-content").html tmpl("tmpl-codelash-vote", @round)
 
     nextQuestion: ->
         for question in @round.data.questions
             return question unless question.answer
 
         null
+
+    isVoting: ->
+        for playerId in @round.data.players
+            return false if playerId == Player.current.id
+
+        !@round.data.votes[Player.current.id]
 
     onEvent: (data) ->
         switch data.round_event
@@ -31,6 +41,9 @@ class CodeLash
                 for player in data.players
                     Player.find(player.id).setRoundState(player.round_state)
 
+                Round.current.render()
+            when "vote"
+                Round.current = new Round(data)
                 Round.current.render()
 
 window.GameType.CodeLash = CodeLash

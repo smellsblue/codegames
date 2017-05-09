@@ -13,12 +13,39 @@
 
       <input type="submit" class="btn btn-primary" value="submit" />
     <% end.sub("__ID__", "{%= nextQuestion.round_id %}").html_safe %>
-    {% } else { %}
-      <p class="lead">
-        Hold tight while we gather the other answers.
-      </p>
-    {% } %}
+  {% } else { %}
+    <p class="lead">
+      Hold tight while we gather the other answers.
+    </p>
+  {% } %}
 </script>
 
 <script type="text/x-tmpl" id="tmpl-codelash-vote">
+  {% if (o.gameObject.isVoting()) { %}
+    <div class="row">
+      <div class="col-xs-12">
+        <p class="lead">
+          {%= o.roundData.question %}
+        </p>
+      </div>
+
+      <div class="col-xs-12 lead">
+        <%= form_tag answer_round_path("__ID__") do %>
+          <input type="hidden" name="vote" value="0" />
+          <input type="submit" class="form-control btn btn-primary" value="{%= o.data.answers[0] %}" />
+        <% end.sub("__ID__", "{%= o.id %}").html_safe %>
+      </div>
+
+      <div class="col-xs-12 lead">
+        <%= form_tag answer_round_path("__ID__") do %>
+          <input type="hidden" name="vote" value="1" />
+          <input type="submit" class="form-control btn btn-primary" value="{%= o.data.answers[1] %}" />
+        <% end.sub("__ID__", "{%= o.id %}").html_safe %>
+      </div>
+    </div>
+  {% } else { %}
+    <p class="lead">
+      Hold tight while we gather the votes.
+    </p>
+  {% } %}
 </script>

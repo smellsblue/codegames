@@ -57,8 +57,12 @@ module GameType
 
         if all_answered?
           rounds.update_all(state: "voting")
-          CreatorChannel.broadcast_to(game, event: "round_event", round_event: "voting", round: game.current_round, players: game.players.active)
-          PlayerChannel.broadcast_to(game, event: "round_event", round_event: "vote", round: game.current_round)
+          active_players = game.players.active.to_a
+          CreatorChannel.broadcast_to(game, event: "round_event", round_event: "voting", round: game.current_round, players: active_players)
+
+          active_players.each do |player|
+            PlayerChannel.broadcast_to(player, event: "round_event", round_event: "vote", round: game.current_round.player_channel_data(player))
+          end
         else
           CreatorChannel.broadcast_to(game, event: "round_event", round_event: "answer_submitted", players: game.players.active)
         end
@@ -88,9 +92,21 @@ module GameType
     end
 
     def data_for_player(player)
-      {
-        questions: questions_for_player(player)
-      }
+      if pending?
+        {
+          questions: questions_for_player(player)
+        }
+      elsif voting?
+        round.data
+      end
+    end
+
+    def round_data_for_player(player)
+      if pending?
+        {}
+      elsif voting?
+        round.round_data.data
+      end
     end
 
     private

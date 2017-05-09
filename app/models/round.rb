@@ -61,7 +61,8 @@ class Round < ApplicationRecord
       id: id,
       game_type: game_type,
       state: state,
-      data: game_object.data_for_player(player)
+      data: game_object.data_for_player(player),
+      round_data: game_object.round_data_for_player(player)
     }
   end
 end
