@@ -48,16 +48,16 @@ class FibOnacci
             guessFor = @round.data.guesses[player.id]
             node = $(tmpl("tmpl-fibonacci-guess-from-player", player))
             parent = $(".answer-tags[data-answer-index='#{guessFor}']")
-            node.hide().appendTo(parent).delay(delay).fadeIn(300)
+            node.hide().appendTo(parent).delay(delay).fadeIn(100)
             parent.append(" ")
-            delay += 500
+            delay += 200
 
-        delay += 1000
+        delay += 2000
 
         $.timeout delay, =>
             $(".answer-label[data-correct='true']").removeClass("label-default").addClass("label-success")
 
-        delay += 500
+        delay += 200
 
         $.timeout delay, =>
             guessFor = @round.data.guesses[player.id]
@@ -66,17 +66,17 @@ class FibOnacci
             node.hide().appendTo(parent).fadeIn(300)
             parent.append(" ")
 
-        delay += 1000
+        delay += 2000
 
         for player in Player.all
             parent = $(".answer-tags[data-from-player-id='#{player.id}']")
             amountOfGuesses = parent.find(".guess").size()
             node = $(tmpl("tmpl-fibonacci-score-for-guesses", { player: player, guesses: amountOfGuesses }))
-            node.hide().appendTo(parent).delay(delay).fadeIn(300)
+            node.hide().appendTo(parent).delay(delay).fadeIn(100)
             parent.append(" ")
-            delay += 500
+            delay += 200
 
-        delay += 2500
+        delay += 5000
 
         $.timeout delay, =>
             form = $ tmpl("tmpl-fibonacci-finished-form", @round)

@@ -164,6 +164,28 @@ module GameType
     end
 
     def score_round
+      round_players = round.data[:players].map { |id| game.players.find(id) }
+      player_scores = {}
+
+      round.data[:guesses].each do |player, guess|
+        if guess == -1
+          player_scores[player] ||= 0
+          player_scores[player] += SCORE_FOR_CORRECT
+          round.data[:scoring] << { player: player, score: SCORE_FOR_CORRECT, type: "correct" }
+        else
+          guess_for = round.data[:players][guess]
+          player_scores[guess_for] ||= 0
+          player_scores[guess_for] += SCORE_PER_GUESS
+          round.data[:scoring] << { player: guess_for, score: SCORE_PER_GUESS, type: "guess" }
+        end
+      end
+
+      round_players.each.with_index do |player, index|
+        if player_scores[player.id]
+          player.score += player_scores[player.id]
+          player.save!
+        end
+      end
     end
 
     def all_answered?
