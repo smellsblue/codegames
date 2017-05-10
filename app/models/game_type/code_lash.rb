@@ -40,8 +40,7 @@ module GameType
     end
 
     def self.select_questions(game, amount)
-      already_chosen_ids = game.rounds.where(game_type: game_type).pluck(:round_data_id)
-      RoundData.where(game_type: game_type).where.not(id: already_chosen_ids).order("RANDOM()").take(amount)
+      random_new_round_data(game, amount)
     end
 
     def voting?
