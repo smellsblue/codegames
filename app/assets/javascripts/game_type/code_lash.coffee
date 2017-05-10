@@ -41,8 +41,17 @@ class CodeLash
             delay += 500
 
         delay += 1000
+        scores = []
 
         for score in @round.data.scoring
+            if score.type != "codelash"
+                scores.push(score)
+
+        for score in @round.data.scoring
+            if score.type == "codelash"
+                scores.push(score)
+
+        for score in scores
             node = $(tmpl("tmpl-codelash-score-for-player", score))
             parent = $("#answers-#{score.player} .scores")
             node.hide().appendTo("#answers-#{score.player} .scores").delay(delay).fadeIn(300)
