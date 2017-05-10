@@ -3,7 +3,7 @@ class FibOnacci
         @round = round
 
     needAnswer: ->
-        true
+        @round.data.need_answer
 
     render: ->
         if Game.role == "creator"
@@ -21,9 +21,15 @@ class FibOnacci
             when "pending"
                 $("#game-content").html tmpl("tmpl-fibonacci-question", @round)
 
+    updatePlayerStates: (players) ->
+        return unless Game.role == "creator"
+
+        for player in players
+            Player.find(player.id).setRoundState(player.round_state)
+
     onEvent: (data) ->
         switch data.round_event
             when "answer_submitted"
-                console.log "not yet"
+                @updatePlayerStates(data.players)
 
 window.GameType.FibOnacci = FibOnacci
