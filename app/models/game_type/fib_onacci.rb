@@ -48,5 +48,31 @@ module GameType
     def self.select_questions(game, amount)
       random_new_round_data(game, amount)
     end
+
+    def answer(player, params)
+    end
+
+    def finish(params)
+    end
+
+    def player_state(player)
+      if pending?
+        "pending"
+      else
+        "none"
+      end
+    end
+
+    def data_for_player(player)
+      {}
+    end
+
+    def round_data_for_player(player)
+      if pending?
+        { question: round.round_data.data[:question] }
+      else
+        {}
+      end
+    end
   end
 end
