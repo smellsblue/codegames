@@ -84,6 +84,12 @@ module GameType
         else
           "pending"
         end
+      elsif voting?
+        if round.data[:votes].include?(player.id)
+          "ready"
+        else
+          "pending"
+        end
       end
     end
 
