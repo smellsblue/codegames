@@ -57,6 +57,8 @@ module GameType
     def answer(player, params)
       if pending?
         provide_answer(player, params)
+      elsif guessing?
+        make_guess(player, params)
       end
     end
 
@@ -116,7 +118,7 @@ module GameType
     end
 
     def guessed?(player)
-      false
+      !!round.data[:guesses][player.id]
     end
 
     def provide_answer(player, params)
@@ -140,8 +142,35 @@ module GameType
       end
     end
 
+    def make_guess(player, params)
+      guess = params[:guess].to_i
+      raise "Invalid guess!" if guess < -1 || guess >= round.data[:players].size
+      guess = round.data[:answer_index_order][guess]
+      raise "Cannot guess your own!" if player.id == round.data[:players][guess]
+      round.data[:guesses][player.id] = guess
+      round.save!
+
+      if all_guessed?
+        round.state = "guessed"
+        score_round
+        round.save!
+        CreatorChannel.broadcast_to(game, event: "round_event", round_event: "guessed", round: round)
+      else
+        CreatorChannel.broadcast_to(game, event: "round_event", round_event: "guess_submitted", players: game.players.active)
+      end
+    end
+
+    def score_round
+    end
+
     def all_answered?
       round.data[:answers].none?(&:nil?)
+    end
+
+    def all_guessed?
+      game.players.active.all? do |player|
+        round.data[:guesses].include?(player.id)
+      end
     end
   end
 end

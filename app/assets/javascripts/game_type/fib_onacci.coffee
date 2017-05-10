@@ -41,5 +41,7 @@ class FibOnacci
         switch data.round_event
             when "answer_submitted"
                 @updatePlayerStates(data.players)
+            when "guess_submitted"
+                @updatePlayerStates(data.players)
 
 window.GameType.FibOnacci = FibOnacci
