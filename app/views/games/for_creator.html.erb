@@ -44,6 +44,16 @@
       <button type="submit" class="btn btn-primary" name="game" value="fibonacci">Fib-onacci</button>
     </p>
   <% end %>
+
+  <hr />
+
+  <h4><strong>Player Scores</strong></h4>
+
+  <ul id="players" class="list-unstyled">
+    <% @game.players.active.order(score: :desc).each do |player| %>
+      <li class="text-uppercase"><strong><%= player.score %></strong> <%= player.name %></li>
+    <% end %>
+  </ul>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-player">
