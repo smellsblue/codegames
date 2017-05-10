@@ -37,11 +37,18 @@ class FibOnacci
         for player in players
             Player.find(player.id).setRoundState(player.round_state)
 
+    renderNewRound: (data) ->
+        Round.current = new Round(data)
+        Round.current.render()
+
     onEvent: (data) ->
         switch data.round_event
             when "answer_submitted"
                 @updatePlayerStates(data.players)
             when "guess_submitted"
+                @updatePlayerStates(data.players)
+            when "guessing"
+                @renderNewRound(data)
                 @updatePlayerStates(data.players)
 
 window.GameType.FibOnacci = FibOnacci
