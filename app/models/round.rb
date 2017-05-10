@@ -16,6 +16,19 @@ class Round < ApplicationRecord
     end
   end
 
+  def self.finish(session, params)
+    Round.transaction do
+      return unless session[:game_id]
+      return unless session[:role] == "creator"
+      game = Game.active.find(session[:game_id])
+      round = game.current_round
+      return unless round
+      return unless round.id == params[:id].to_i
+      round.game_object.finish(params)
+      round
+    end
+  end
+
   # Create a round, which could end up being multiple rounds, and start the
   # first round
   def self.start_round(game, params)

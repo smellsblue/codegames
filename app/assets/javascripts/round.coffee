@@ -19,4 +19,10 @@ class Round
     onEvent: (data) ->
         @gameObject.onEvent(data)
 
+    @render: ->
+        if Round.current
+            Round.current.render()
+        else
+            $("#game-content").html tmpl("tmpl-no-round", {})
+
 window.Round = Round

@@ -54,3 +54,8 @@
   %}
   <span class="score label label-{%= label %}">+{%= o.score %}{%= extra %}</span>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-codelash-finished-form">
+  <%= form_tag finish_round_path("__ID__") do %>
+  <% end.sub("__ID__", "{%= o.id %}").html_safe %>
+</script>

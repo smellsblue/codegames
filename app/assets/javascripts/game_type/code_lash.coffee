@@ -58,6 +58,13 @@ class CodeLash
             parent.append(" ")
             delay += 500
 
+        delay += 2500
+
+        $.timeout delay, =>
+            form = $ tmpl("tmpl-codelash-finished-form", @round)
+            form.appendTo "body"
+            form.submit()
+
     nextQuestion: ->
         for question in @round.data.questions
             return question unless question.answer
@@ -96,6 +103,5 @@ class CodeLash
             when "voted"
                 @renderNewRound(data)
                 @clearPlayerStates()
-                @render()
 
 window.GameType.CodeLash = CodeLash

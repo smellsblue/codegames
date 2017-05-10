@@ -22,18 +22,7 @@
 
 <div class="row">
   <div class="col-xs-9">
-    <% if @game.active_round? %>
-      <div id="game-content"></div>
-    <% elsif @game.started? %>
-      <h2>Play a round of:</h2>
-
-      <%= form_tag start_rounds_path do %>
-        <p>
-          <button type="submit" class="btn btn-primary" name="game" value="codelash">CodeLash</button>
-          <button type="submit" class="btn btn-primary" name="game" value="fibonacci">Fib-onacci</button>
-        </p>
-      <% end %>
-    <% end %>
+    <div id="game-content"></div>
   </div>
 
   <div class="col-xs-3">
@@ -45,6 +34,17 @@
 </div>
 
 <%= render partial: "games/type/codelash/for_creator" %>
+
+<script type="text/x-tmpl" id="tmpl-no-round">
+  <h2>Play a round of:</h2>
+
+  <%= form_tag start_rounds_path do %>
+    <p>
+      <button type="submit" class="btn btn-primary" name="game" value="codelash">CodeLash</button>
+      <button type="submit" class="btn btn-primary" name="game" value="fibonacci">Fib-onacci</button>
+    </p>
+  <% end %>
+</script>
 
 <script type="text/x-tmpl" id="tmpl-player">
   <li class="player text-uppercase" data-id="{%= o.id %}">
@@ -61,14 +61,13 @@
   Game.role = "creator";
   Game.current = new Game(<%= @game.to_json.html_safe %>);
 
-  <% @game.players.each do |player| %>
-    <% if player.active? %>
-      Player.joined(<%= player.to_json.html_safe %>);
-    <% end %>
+  <% @game.players.active.each do |player| %>
+    Player.joined(<%= player.to_json.html_safe %>);
   <% end %>
 
   <% if @game.active_round? %>
     Round.current = new Round(<%= @game.current_round.to_json.html_safe %>);
-    Round.current.render();
   <% end %>
+
+  Round.render();
 <% end %>

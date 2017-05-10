@@ -19,13 +19,15 @@
   </li>
 <% end %>
 
-<div id="game-content">
+<div id="game-content"></div>
+
+<%= render partial: "games/type/codelash/for_player" %>
+
+<script type="text/x-tmpl" id="tmpl-no-round">
   <p class="lead">
     Please wait for the round to start
   </p>
-</div>
-
-<%= render partial: "games/type/codelash/for_player" %>
+</script>
 
 <%= javascript_tag do %>
   Game.role = "player";
@@ -34,6 +36,7 @@
 
   <% if @game.active_round? %>
     Round.current = new Round(<%= @game.current_round.to_json_for_player(@player).html_safe %>);
-    Round.current.render();
   <% end %>
+
+  Round.render();
 <% end %>

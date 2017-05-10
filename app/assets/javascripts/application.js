@@ -23,3 +23,4 @@
 //= require game_type/code_lash
 //= require game_type/fib_onacci
 //= require round
+//= require util

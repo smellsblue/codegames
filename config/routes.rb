@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :rounds, only: [] do
     member do
       post :answer
+      post :finish
     end
 
     collection do

@@ -7,3 +7,6 @@ App.cable.subscriptions.create { channel: "PlayerChannel" },
                 Round.current = Round.started(data)
             when "round_event"
                 Round.current.onEvent(data)
+            when "round_ended"
+                Round.current = null
+                Round.render()

@@ -8,4 +8,9 @@ class RoundsController < ApplicationController
     round = Game.start_round(session, params)
     redirect_to game_path(round.game)
   end
+
+  def finish
+    round = Round.finish(session, params)
+    redirect_to game_path(round.game)
+  end
 end

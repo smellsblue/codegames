@@ -60,6 +60,23 @@ module GameType
       end
     end
 
+    def finish(params)
+      round.state = "finished"
+      round.save!
+      next_round = round.next_round
+      game.current_round = next_round
+      game.save!
+      active_players = game.players.active.to_a
+
+      if next_round
+        active_players.each do |player|
+          PlayerChannel.broadcast_to(player, event: "round_event", round_event: "voting", round: next_round.player_channel_data(player))
+        end
+      else
+        PlayerChannel.broadcast_to(game, event: "round_ended")
+      end
+    end
+
     def player_state(player)
       if pending?
         questions = questions_for_player(player)
