@@ -78,13 +78,16 @@ module GameType
         {
           need_answer: need_answer?(player)
         }
-      else
-        {}
+      elsif guessing?
+        {
+          need_answer: !guessed?(player),
+          answers: questions_for_player(player)
+        }
       end
     end
 
     def round_data_for_player(player)
-      if pending?
+      if pending? || guessing?
         { question: round.round_data.data[:question] }
       else
         {}
@@ -92,6 +95,16 @@ module GameType
     end
 
     private
+
+    def questions_for_player(player)
+      round.data[:answer_index_order].map do |index|
+        if index == -1
+          { text: round.round_data.data[:answer], mine: false }
+        else
+          { text: round.data[:answers][index], mine: (round.data[:players][index] == player.id) }
+        end
+      end
+    end
 
     def answering_question?(player)
       round.data[:players].index(player.id)

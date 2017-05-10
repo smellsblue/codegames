@@ -17,3 +17,36 @@
     </p>
   {% } %}
 </script>
+
+<script type="text/x-tmpl" id="tmpl-fibonacci-guessing">
+  {% if (o.gameObject.needAnswer()) { %}
+    <div class="row">
+      <div class="col-xs-12">
+        <p class="lead">
+          {%= o.roundData.question %}
+        </p>
+      </div>
+
+      {% for (var i = 0; i < o.data.answers.length; i++) { %}
+        <div class="col-xs-12 lead">
+          {% if (o.data.answers[i].mine) { %}
+            <%= form_tag answer_round_path("__ID__"), disabled: true do %>
+              <button type="submit" class="form-control btn btn-default" disabled>
+                <em>Your answer:</em> {%= o.data.answers[i].text %}
+              </button>
+            <% end.sub("__ID__", "{%= o.id %}").html_safe %>
+          {% } else { %}
+            <%= form_tag answer_round_path("__ID__") do %>
+              <input type="hidden" name="guess" value="{%= i %}" />
+              <button type="submit" class="form-control btn btn-primary">{%= o.data.answers[i].text %}</button>
+            <% end.sub("__ID__", "{%= o.id %}").html_safe %>
+          {% } %}
+        </div>
+      {% } %}
+    </div>
+  {% } else { %}
+    <p class="lead">
+      Hold tight while we gather the guesses.
+    </p>
+  {% } %}
+</script>

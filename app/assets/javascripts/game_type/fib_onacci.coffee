@@ -28,6 +28,8 @@ class FibOnacci
         switch @round.state
             when "pending"
                 $("#game-content").html tmpl("tmpl-fibonacci-question", @round)
+            when "guessing"
+                $("#game-content").html tmpl("tmpl-fibonacci-guessing", @round)
 
     updatePlayerStates: (players) ->
         return unless Game.role == "creator"
