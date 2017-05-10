@@ -23,7 +23,7 @@
 <div class="row">
   <div class="col-xs-9">
     <% if @game.active_round? %>
-      <%= render partial: "games/type/#{@game.current_round.game_type}/for_creator" %>
+      <div id="game-content"></div>
     <% elsif @game.started? %>
       <h2>Play a round of:</h2>
 
@@ -44,6 +44,8 @@
   </div>
 </div>
 
+<%= render partial: "games/type/codelash/for_creator" %>
+
 <script type="text/x-tmpl" id="tmpl-player">
   <li class="player text-uppercase" data-id="{%= o.id %}">
     {%= o.name %}
@@ -59,13 +61,14 @@
   Game.role = "creator";
   Game.current = new Game(<%= @game.to_json.html_safe %>);
 
-  <% if @game.active_round? %>
-    Round.current = new Round(<%= @game.current_round.to_json.html_safe %>);
-  <% end %>
-
   <% @game.players.each do |player| %>
     <% if player.active? %>
       Player.joined(<%= player.to_json.html_safe %>);
     <% end %>
+  <% end %>
+
+  <% if @game.active_round? %>
+    Round.current = new Round(<%= @game.current_round.to_json.html_safe %>);
+    Round.current.render();
   <% end %>
 <% end %>

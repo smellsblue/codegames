@@ -6,9 +6,9 @@
       {%= nextQuestion.text %}
     </p>
 
-    <%= form_tag answer_round_path("__ID__") do %>
+    <%= form_tag answer_round_path("__ID__"), data: { live_guarded: "true" } do %>
       <div class="form-group">
-        <input type="text" name="answer" class="form-control" placeholder="witty answer" />
+        <input type="text" name="answer" class="form-control" placeholder="witty answer" data-guard="required" />
       </div>
 
       <input type="submit" class="btn btn-primary" value="submit" />

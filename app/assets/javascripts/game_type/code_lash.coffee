@@ -9,7 +9,14 @@ class CodeLash
             @renderForPlayer()
 
     renderForCreator: ->
-        $("#game-content").html tmpl("tmpl-codelash-vote", @round)
+        switch @round.state
+            when "pending"
+                $("#game-content").html tmpl("tmpl-codelash-pending", @round)
+            when "voting"
+                $("#game-content").html tmpl("tmpl-codelash-vote", @round)
+            when "voted"
+                $("#game-content").html tmpl("tmpl-codelash-vote", @round)
+                @showResults()
 
     renderForPlayer: ->
         switch @round.state
@@ -17,6 +24,30 @@ class CodeLash
                 $("#game-content").html tmpl("tmpl-codelash-questions", @round)
             when "voting"
                 $("#game-content").html tmpl("tmpl-codelash-vote", @round)
+            when "voted"
+                $("#game-content").html tmpl("tmpl-codelash-vote", @round)
+
+    showResults: ->
+        return unless Game.role == "creator"
+        delay = 0
+
+        for player in Player.all
+            voteFor = @round.data.votes[player.id]
+            continue unless voteFor?
+            node = $(tmpl("tmpl-codelash-vote-from-player", player))
+            parent = $("#answers-#{voteFor} .votes")
+            node.hide().appendTo(parent).delay(delay).fadeIn(300)
+            parent.append(" ")
+            delay += 500
+
+        delay += 1000
+
+        for score in @round.data.scoring
+            node = $(tmpl("tmpl-codelash-score-for-player", score))
+            parent = $("#answers-#{score.player} .scores")
+            node.hide().appendTo("#answers-#{score.player} .scores").delay(delay).fadeIn(300)
+            parent.append(" ")
+            delay += 500
 
     nextQuestion: ->
         for question in @round.data.questions
@@ -28,22 +59,34 @@ class CodeLash
         for playerId in @round.data.players
             return false if playerId == Player.current.id
 
-        !@round.data.votes[Player.current.id]
+        !@round.data.votes[Player.current.id]?
+
+    updatePlayerStates: (players) ->
+        return unless Game.role == "creator"
+
+        for player in players
+            Player.find(player.id).setRoundState(player.round_state)
+
+    renderNewRound: (data) ->
+        Round.current = new Round(data)
+        Round.current.render()
+
+    clearPlayerStates: ->
+        for player in Player.all
+            player.setRoundState("none")
 
     onEvent: (data) ->
         switch data.round_event
             when "answer_submitted"
-                for player in data.players
-                    Player.find(player.id).setRoundState(player.round_state)
+                @updatePlayerStates(data.players)
+            when "vote_submitted"
+                @updatePlayerStates(data.players)
             when "voting"
-                Round.current = new Round(data)
-
-                for player in data.players
-                    Player.find(player.id).setRoundState(player.round_state)
-
-                Round.current.render()
-            when "vote"
-                Round.current = new Round(data)
-                Round.current.render()
+                @renderNewRound(data)
+                @updatePlayerStates(data.players)
+            when "voted"
+                @renderNewRound(data)
+                @clearPlayerStates()
+                @render()
 
 window.GameType.CodeLash = CodeLash

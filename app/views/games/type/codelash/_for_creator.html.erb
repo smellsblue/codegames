@@ -1,24 +1,16 @@
-<div id="game-content">
-  <% if @game.current_round.game_object.pending? %>
-    <p class="lead">
-      Check your device
-    </p>
+<script type="text/x-tmpl" id="tmpl-codelash-pending">
+  <p class="lead">
+    Check your device
+  </p>
 
-    <p class="lead">
-      Answer your questions with the funniest answer you can come up with
-    </p>
+  <p class="lead">
+    Answer your questions with the funniest answer you can come up with
+  </p>
 
-    <p class="lead">
-      Remember to answer both questions
-    </p>
-  <% elsif @game.current_round.game_object.voting? %>
-    <%= javascript_tag do %>
-      $(function() {
-        Round.current.render();
-      });
-    <% end %>
-  <% end %>
-</div>
+  <p class="lead">
+    Remember to answer both questions
+  </p>
+</script>
 
 <script type="text/x-tmpl" id="tmpl-codelash-vote">
   <div class="row">
@@ -29,18 +21,36 @@
     </div>
 
     <div class="col-xs-6">
-      <p class="well lead">
-        {%= o.data.answers[0] %}
-      </p>
+      <div class="well lead" id="answers-0">
+        <div class="answer">{%= o.data.answers[0] %}</div>
+        <div class="votes"></div>
+        <div class="scores"></div>
+      </div>
     </div>
 
     <div class="col-xs-6">
-      <p class="well lead">
-        {%= o.data.answers[1] %}
-      </p>
+      <div class="well lead" id="answers-1">
+        <div class="answer">{%= o.data.answers[1] %}</div>
+        <div class="votes"></div>
+        <div class="scores"></div>
+      </div>
     </div>
   </div>
 </script>
 
-<script type="text/x-tmpl" id="tmpl-codelash-vote-results">
+<script type="text/x-tmpl" id="tmpl-codelash-vote-from-player">
+  <span class="vote label label-primary">{%= o.name %}</span>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-codelash-score-for-player">
+  {%
+    var label = "success";
+    var extra = "";
+
+    if (o.type == "codelash") {
+      label = "warning";
+      extra = " CodeLash!";
+    }
+  %}
+  <span class="score label label-{%= label %}">+{%= o.score %}{%= extra %}</span>
 </script>
