@@ -17,3 +17,31 @@
     <h3><span class="label label-default" style="display: block;">{%= o.gameObject.answerAtIndex(o.data.answer_index_order[i]) %}</span></h3>
   {% } %}
 </script>
+
+<script type="text/x-tmpl" id="tmpl-fibonacci-guessed">
+  <p class="lead">
+    {%= o.roundData.question %}
+  </p>
+
+  {% for (var i = 0; i < o.data.answer_index_order.length; i++) { %}
+    <h3><span class="answer-label label label-default" style="display: block;" data-correct="{%= o.data.answer_index_order[i] == -1 %}">{%= o.gameObject.answerAtIndex(o.data.answer_index_order[i]) %}</span></h3>
+    <div id="answer-tags-{%= i %}" class="answer-tags lead" data-answer-index="{%= o.data.answer_index_order[i] %}" data-from-player-id="{%= o.gameObject.playerAtIndex(o.data.answer_index_order[i]) %}" data-correct="{%= o.data.answer_index_order[i] == -1 %}"></div>
+  {% } %}
+</script>
+
+<script type="text/x-tmpl" id="tmpl-fibonacci-guess-from-player">
+  <span class="guess label label-primary">{%= o.name %}</span>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-fibonacci-correct">
+  <span class="correct label label-warning">Correct! +<%= GameType::FibOnacci::SCORE_FOR_CORRECT %></span>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-fibonacci-score-for-guesses">
+  <span class="guess-score label label-warning">{%= o.player.name %}'s answer: +{%= o.guesses * <%= GameType::FibOnacci::SCORE_PER_GUESS %> %}</span>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-fibonacci-finished-form">
+  <%= form_tag finish_round_path("__ID__") do %>
+  <% end.sub("__ID__", "{%= o.id %}").html_safe %>
+</script>

@@ -1,5 +1,8 @@
 module GameType
   class FibOnacci < GameType::Base
+    SCORE_FOR_CORRECT = 200
+    SCORE_PER_GUESS = 10
+
     def self.game_type
       "fibonacci"
     end
@@ -144,8 +147,8 @@ module GameType
 
     def make_guess(player, params)
       guess = params[:guess].to_i
-      raise "Invalid guess!" if guess < -1 || guess >= round.data[:players].size
       guess = round.data[:answer_index_order][guess]
+      raise "Invalid guess!" if guess < -1 || guess >= round.data[:players].size
       raise "Cannot guess your own!" if player.id == round.data[:players][guess]
       round.data[:guesses][player.id] = guess
       round.save!
