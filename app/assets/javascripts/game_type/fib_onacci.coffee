@@ -5,6 +5,12 @@ class FibOnacci
     needAnswer: ->
         @round.data.need_answer
 
+    answerAtIndex: (index) ->
+        if index == -1
+            @round.roundData.answer
+        else
+            @round.data.answers[index]
+
     render: ->
         if Game.role == "creator"
             @renderForCreator()
@@ -15,6 +21,8 @@ class FibOnacci
         switch @round.state
             when "pending"
                 $("#game-content").html tmpl("tmpl-fibonacci-pending", @round)
+            when "guessing"
+                $("#game-content").html tmpl("tmpl-fibonacci-guessing", @round)
 
     renderForPlayer: ->
         switch @round.state

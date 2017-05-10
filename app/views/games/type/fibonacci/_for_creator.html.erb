@@ -7,3 +7,13 @@
     <em>Use your device to provide an answer that is believable</em>
   </p>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-fibonacci-guessing">
+  <p class="lead">
+    {%= o.roundData.question %}
+  </p>
+
+  {% for (var i = 0; i < o.data.answer_index_order.length; i++) { %}
+    <h3><span class="label label-default" style="display: block;">{%= o.gameObject.answerAtIndex(o.data.answer_index_order[i]) %}</span></h3>
+  {% } %}
+</script>

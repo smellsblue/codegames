@@ -35,6 +35,14 @@ module GameType
       @rounds ||= game.rounds.not_finished.order(:id)
     end
 
+    def player_state_from_boolean(test)
+      if test
+        "ready"
+      else
+        "pending"
+      end
+    end
+
     def pending?
       round.state == "pending"
     end

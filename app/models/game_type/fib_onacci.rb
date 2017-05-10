@@ -15,7 +15,8 @@ module GameType
 
         round.data = {
           players: players,
-          answers: players.map { nil },
+          answers: Array.new(players.size),
+          answer_index_order: (-1...players.size).to_a.shuffle,
           guesses: {},
           scoring: []
         }
@@ -49,6 +50,10 @@ module GameType
       random_new_round_data(game, amount)
     end
 
+    def guessing?
+      round.state == "guessing"
+    end
+
     def answer(player, params)
       if pending?
         provide_answer(player, params)
@@ -60,11 +65,9 @@ module GameType
 
     def player_state(player)
       if pending?
-        if answering_question?(player) && !need_answer?(player)
-          "ready"
-        else
-          "pending"
-        end
+        player_state_from_boolean(answering_question?(player) && !need_answer?(player))
+      elsif guessing?
+        player_state_from_boolean guessed?(player)
       else
         "none"
       end
@@ -97,6 +100,10 @@ module GameType
     def need_answer?(player)
       index = round.data[:players].index(player.id)
       !!(index && !round.data[:answers][index])
+    end
+
+    def guessed?(player)
+      false
     end
 
     def provide_answer(player, params)

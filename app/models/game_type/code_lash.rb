@@ -78,19 +78,9 @@ module GameType
 
     def player_state(player)
       if pending?
-        questions = questions_for_player(player)
-
-        if questions.all? { |x| x[:answer] }
-          "ready"
-        else
-          "pending"
-        end
+        player_state_from_boolean(questions_for_player(player).all? { |x| x[:answer] })
       elsif voting?
-        if round.data[:votes].include?(player.id)
-          "ready"
-        else
-          "pending"
-        end
+        player_state_from_boolean round.data[:votes].include?(player.id)
       else
         "none"
       end
