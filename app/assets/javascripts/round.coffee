@@ -12,6 +12,7 @@ class Round
         round = new Round(e)
         Round.current = round
         round.render()
+        round
 
     render: ->
         @gameObject.render()
