@@ -66,6 +66,20 @@ module GameType
     end
 
     def finish(params)
+      round.state = "finished"
+      round.save!
+      next_round = round.next_round
+      game.current_round = next_round
+      game.save!
+      active_players = game.players.active.to_a
+
+      if next_round
+        active_players.each do |player|
+          PlayerChannel.broadcast_to(player, event: "round_started", round: next_round.player_channel_data(player))
+        end
+      else
+        PlayerChannel.broadcast_to(game, event: "round_ended")
+      end
     end
 
     def player_state(player)
@@ -149,7 +163,7 @@ module GameType
       guess = params[:guess].to_i
       guess = round.data[:answer_index_order][guess]
       raise "Invalid guess!" if guess < -1 || guess >= round.data[:players].size
-      raise "Cannot guess your own!" if player.id == round.data[:players][guess]
+      raise "Cannot guess your own!" if guess != -1 && player.id == round.data[:players][guess]
       round.data[:guesses][player.id] = guess
       round.save!
 
