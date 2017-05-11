@@ -142,6 +142,8 @@ module GameType
       index = round.data[:players].index(player.id)
       raise "No action for this player!" unless index
       return if round.data[:answers][index]
+      raise DisplayError, "That's correct! Please submit a different answer." if correct_answer?(params[:answer])
+      raise DisplayError, "Someone already provided that! Please submit a different answer." if round.data[:answers].any? { |x| same_answer?(x, params[:answer]) }
       round.data[:answers][index] = params[:answer]
       round.save!
 
@@ -157,6 +159,15 @@ module GameType
       else
         CreatorChannel.broadcast_to(game, event: "round_event", round_event: "answer_submitted", players: game.players.active)
       end
+    end
+
+    def correct_answer?(answer)
+      same_answer?(answer, round.round_data.data[:answer])
+    end
+
+    def same_answer?(x, y)
+      return false if x.nil? || y.nil?
+      x.strip.downcase.gsub(/\s+/, " ") == y.strip.downcase.gsub(/\s+/, " ")
     end
 
     def make_guess(player, params)
